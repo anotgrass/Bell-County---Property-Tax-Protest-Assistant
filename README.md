@@ -1,4 +1,4 @@
-# Property Tax Protest Assistant
+# Bell County - Property Tax Protest Assistant
 
 Automation-focused property tax protest helper for a single county (v1: Bell County, TX).
 
