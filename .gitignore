@@ -106,10 +106,17 @@ logs/
 # =============================================================================
 # GIS data
 # -----------------------------------------------------------------------------
-# The canonical snapshots under data/geojson/**/*.geojson MUST be committed
-# (they are consumed by the GitHub Pages site). Only ignore transient
-# artifacts and non-canonical local exports here.
+# Bell snapshot GeoJSON is large; keep it local (download with
+# scripts/download_arcgis_geojson.py). The public site uses live ArcGIS; admin
+# preview is ?adminGeojson=1 with a local http server. Only small contract
+# files (e.g. schema.json) belong in the repo.
 # =============================================================================
+
+# Local snapshot files (per-year folders under data/geojson/<county>/)
+data/geojson/**/*.geojson
+# Regenerated with the snapshots; omit from the repo
+data/geojson/**/manifest.json
+data/geojson/**/README.md
 
 # Atomic-write temp files produced by scripts/download_arcgis_geojson.py
 *.geojson.tmp
@@ -124,9 +131,3 @@ logs/
 *.sbn
 *.sbx
 *.qix
-
-# Safety net: re-include everything under data/geojson/ even if a future
-# rule accidentally matches it.
-!data/
-!data/**
-!data/geojson/**/*.geojson
