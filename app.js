@@ -907,7 +907,8 @@ function syncSettingsControls() {
   applyUiPrefs();
   const tagline = byId("siteTagline");
   if (tagline) {
-    tagline.textContent = "Tax Appraisal District assistant · informational only, not legal advice";
+    tagline.textContent =
+      "Planning & drafting aid · confirm values & deadlines with Bell CAD · not legal advice";
   }
 }
 
