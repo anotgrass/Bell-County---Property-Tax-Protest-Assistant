@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Bell County GeoJSON Snapshot Schema (canonical guidance)",
+  "type": "object",
+  "properties": {
+    "parcels": {
+      "type": "object",
+      "description": "FeatureCollection file: parcels.geojson",
+      "required": ["type", "features"],
+      "properties": {
+        "type": { "const": "FeatureCollection" },
+        "features": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "attributes": { "$ref": "#/$defs/parcelProps" },
+              "properties": { "$ref": "#/$defs/parcelProps" }
+            }
+          }
+        }
+      }
+    },
+    "marketAnalysis": {
+      "type": "object",
+      "description": "FeatureCollection file: market-analysis.geojson",
+      "required": ["type", "features"],
+      "properties": {
+        "type": { "const": "FeatureCollection" },
+        "features": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "attributes": { "$ref": "#/$defs/marketProps" },
+              "properties": { "$ref": "#/$defs/marketProps" }
+            }
+          }
+        }
+      }
+    },
+    "sales": {
+      "type": "object",
+      "description": "FeatureCollection file: sales.geojson",
+      "required": ["type", "features"],
+      "properties": {
+        "type": { "const": "FeatureCollection" },
+        "features": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "attributes": { "$ref": "#/$defs/salesProps" },
+              "properties": { "$ref": "#/$defs/salesProps" }
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "parcelProps": {
+      "type": "object",
+      "properties": {
+        "PROP_ID": {},
+        "prop_id": {},
+        "PROP_ID_TEXT": {},
+        "prop_id_text": {},
+        "SITUS_ADDRESS": {},
+        "situs_address": {},
+        "situs_city": {},
+        "SITUS_CITY": {},
+        "hood_cd": {},
+        "HOOD_CD": {},
+        "market": {},
+        "MARKET": {},
+        "land_val": {},
+        "LAND_VAL": {},
+        "imprv_val": {},
+        "IMPRV_VAL": {}
+      }
+    },
+    "marketProps": {
+      "type": "object",
+      "properties": {
+        "PROP_ID": {},
+        "prop_id": {},
+        "Property_Address": {},
+        "property_address": {},
+        "Neighborhood": {},
+        "neighborhood": {},
+        "NBHD__Market_Area": {},
+        "NBRHD_Market_Area": {},
+        "Market_Value": {},
+        "Median_Value": {},
+        "Median_Sales_Price": {},
+        "Median_Sq_Ft": {},
+        "Median_Year_Built": {}
+      }
+    },
+    "salesProps": {
+      "type": "object",
+      "properties": {
+        "Property_ID": {},
+        "PROP_ID": {},
+        "Sale_Date": {},
+        "Date_Of_Sale": {},
+        "Square_Foot": {},
+        "Neighborhood": {}
+      }
+    }
+  }
+}

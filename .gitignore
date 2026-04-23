@@ -1,0 +1,132 @@
+# =============================================================================
+# Local-only folders (not published / not needed on GitHub Pages)
+# =============================================================================
+
+# Internal scripts (ArcGIS downloader, ad-hoc tooling, etc.)
+scripts/
+
+# Internal docs / planning notes
+docs/
+
+# =============================================================================
+# Python (in case any .py files are ever placed at the repo root)
+# =============================================================================
+
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+.eggs/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+.python-version
+
+# =============================================================================
+# Node / JS tooling (if ever added)
+# =============================================================================
+
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store/
+
+# =============================================================================
+# Secrets / environment files
+# =============================================================================
+
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets.json
+credentials.json
+
+# =============================================================================
+# Editor / IDE
+# =============================================================================
+
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+.cursor/
+
+# =============================================================================
+# OS junk
+# =============================================================================
+
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# =============================================================================
+# Build / deploy artifacts
+# =============================================================================
+
+_site/
+dist/
+build/
+.cache/
+tmp/
+temp/
+
+# =============================================================================
+# Logs
+# =============================================================================
+
+*.log
+logs/
+
+# =============================================================================
+# GIS data
+# -----------------------------------------------------------------------------
+# The canonical snapshots under data/geojson/**/*.geojson MUST be committed
+# (they are consumed by the GitHub Pages site). Only ignore transient
+# artifacts and non-canonical local exports here.
+# =============================================================================
+
+# Atomic-write temp files produced by scripts/download_arcgis_geojson.py
+*.geojson.tmp
+
+# Non-canonical local GIS exports (shapefile / geopackage sidecars)
+*.gpkg
+*.shp
+*.shx
+*.dbf
+*.prj
+*.cpg
+*.sbn
+*.sbx
+*.qix
+
+# Safety net: re-include everything under data/geojson/ even if a future
+# rule accidentally matches it.
+!data/
+!data/**
+!data/geojson/**/*.geojson

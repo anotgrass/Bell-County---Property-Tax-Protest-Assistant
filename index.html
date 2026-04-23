@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Property Tax Protest Assistant</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-header-inner container">
+        <div class="site-header-brand">
+          <h1 class="site-title">
+            <a href="#">Property Tax Protest Assistant</a>
+          </h1>
+          <p id="siteTagline" class="site-tagline muted">Tax Appraisal District assistant · informational only, not legal advice</p>
+        </div>
+        <nav class="site-nav" aria-label="Tax appraisal district site">
+          <button id="backToFindBtn" class="site-nav-back-btn" type="button" hidden>New Search</button>
+        </nav>
+      </div>
+    </header>
+
+    <aside class="app-main-menu" aria-label="Main menu">
+      <div class="app-main-menu-nav">
+        <div class="app-main-menu-brand">
+          <div class="app-main-menu-brand-copy">
+            <strong>Protest Suite</strong>
+            <span>Tax Appraisal District panel</span>
+          </div>
+        </div>
+        <nav class="app-main-menu-links">
+          <button class="app-main-menu-link is-active" type="button" data-app-page="find">
+            <span class="menu-link-icon" aria-hidden="true">⌕</span>
+            <span>Find</span>
+          </button>
+          <button id="dashboardMenuBtn" class="app-main-menu-link" type="button" data-app-page="dashboard" hidden>
+            <span class="menu-link-icon" aria-hidden="true">◫</span>
+            <span>Dashboard</span>
+          </button>
+          <button class="app-main-menu-link" type="button" data-app-page="playbook">
+            <span class="menu-link-icon" aria-hidden="true">☰</span>
+            <span>Playbook</span>
+          </button>
+        </nav>
+        <div class="app-main-menu-footer">
+          <div class="app-main-menu-submenu">
+            <button id="settingsToggleBtn" class="app-main-menu-link app-main-menu-link-muted" type="button" aria-expanded="false" aria-controls="settingsModal" aria-haspopup="dialog">
+              <span class="menu-link-icon" aria-hidden="true">⚙</span>
+              <span>Settings</span>
+            </button>
+            <div class="app-theme-toggle-group" role="group" aria-label="Theme">
+              <button id="sidebarLightBtn" class="app-theme-toggle-btn" type="button">
+                <span aria-hidden="true">☀</span>
+                <span>Light</span>
+              </button>
+              <button id="sidebarDarkBtn" class="app-theme-toggle-btn is-active" type="button">
+                <span aria-hidden="true">☾</span>
+                <span>Dark</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="container main-content lookup-shell" id="lookupPage">
+      <div class="dashboard-body">
+        <div class="dashboard-body-main lookup-main">
+          <section class="card panel panel-primary lookup-card">
+            <h2>Find Property</h2>
+            <p class="muted helper-text">Enter a Property ID to open your dashboard.</p>
+            <div class="lookup-settings-shell">
+              <div class="site-nav-settings lookup-settings-block">
+                <div class="site-nav-control-group">
+                  <label class="site-nav-control">
+                    <span>County</span>
+                    <select id="countySelect" aria-label="County">
+                      <option value="bell-tx">Bell County, TX</option>
+                    </select>
+                  </label>
+                  <label class="site-nav-control">
+                    <span>Data Source</span>
+                    <select id="dataSourceSelect" aria-label="Data source">
+                      <option value="live">Live services</option>
+                      <option value="geojson">GeoJSON snapshots</option>
+                    </select>
+                  </label>
+                </div>
+                <p id="sourceHealth" class="site-nav-health muted" aria-live="polite"></p>
+              </div>
+              <div class="lookup-links-menu" aria-label="Helpful links">
+                <p class="lookup-links-label">Links</p>
+                <a
+                  id="lookupDistrictLink"
+                  class="site-nav-link lookup-district-link"
+                  href="https://bellcad.org/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Bell County Appraisal District</a
+                >
+              </div>
+            </div>
+            <div class="row lookup-search-row">
+              <input id="apnInputLanding" placeholder="Property ID (e.g. 683219)" />
+              <button id="searchApnLandingBtn">Open Dashboard</button>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <main class="container main-content dashboard-shell" id="dashboardPage">
+      <div class="dashboard-body">
+        <div class="dashboard-body-main">
+          <nav class="dashboard-view-nav" aria-label="Dashboard views">
+            <button class="dashboard-view-btn is-active" type="button" data-step-target="step-market">Market</button>
+            <button class="dashboard-view-btn" type="button" data-step-target="step-notice">Notice</button>
+            <button class="dashboard-view-btn" type="button" data-step-target="step-comps">Sold homes</button>
+            <button class="dashboard-view-btn" type="button" data-step-target="step-estimate">Estimate</button>
+            <button class="dashboard-view-btn" type="button" data-step-target="step-portal">Portal</button>
+            <button class="dashboard-view-btn" type="button" data-step-target="step-packet">Packet</button>
+          </nav>
+          <div
+            id="kpiStrip"
+            class="kpi-strip"
+            hidden
+            aria-label="Active parcel and key metrics"
+          ></div>
+          <div class="dashboard-grid">
+      <section class="card panel panel-primary" id="step-find">
+        <h2>Find Property</h2>
+        <div class="row">
+          <input id="apnInput" placeholder="Property ID (e.g. 683219)" />
+          <button id="searchApnBtn">Search Property ID</button>
+        </div>
+        <div id="qualityBadges" class="parcel-data-quality-host" hidden></div>
+        <div id="propertyLinks" class="resource-links" aria-label="Tax appraisal district quick links"></div>
+      </section>
+
+      <section class="card panel workflow-gated" id="step-market">
+        <h2>Neighborhood Analysis Snapshot</h2>
+        <div id="marketAnalysisCard" class="market-card" hidden>
+          <p id="marketAnalysisHeader" class="muted"></p>
+          <div id="marketAnalysisGrid" class="market-grid"></div>
+          <div id="marketSignals" class="signal-chips"></div>
+        </div>
+      </section>
+
+      <section class="card panel workflow-gated" id="step-comps">
+        <h2>Comparable sold homes</h2>
+        <p class="muted comps-intro">
+          Tax appraisal district sales extracts list <strong>addresses and dates</strong>, not sale prices. Select comps you care about,
+          then enter a price from MLS, deed records, Zillow/Realtor, or your own notes. Prices flow into the printable
+          comp sheet.
+        </p>
+        <div id="soldHomesCard" class="market-card comps-sold-block" hidden>
+          <h3>Neighborhood Sold Homes</h3>
+          <p id="soldHomesHeader" class="muted"></p>
+          <div class="sold-homes-wrap sold-homes-zebra sold-homes-scroll">
+            <table class="sold-homes-table">
+              <thead>
+                <tr>
+                  <th>Select</th>
+                  <th class="nbhd-market-cell">NBHD market area</th>
+                  <th>Address</th>
+                  <th>Sq Ft vs subject</th>
+                  <th>Sale Date</th>
+                  <th>Sale price</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="soldHomesBody"></tbody>
+            </table>
+          </div>
+          <details id="citySalesDetails" class="city-sales" hidden open>
+            <summary>Other Sold Homes In Same City</summary>
+            <label class="city-filter-field">
+              Max Sq Ft Variance (%)
+              <input id="citySqftVariancePct" type="number" min="1" max="100" value="15" />
+            </label>
+            <label class="city-filter-field">
+              Sort By
+              <select id="citySalesSort">
+                <option value="closest_bidirectional" selected>Closest Sq Ft (above/below)</option>
+                <option value="largest_sqft">Largest Sq Ft</option>
+                <option value="closest_sqft">Closest Sq Ft (date tiebreak)</option>
+                <option value="recent_sale">Most Recent Sale</option>
+                <option value="smallest_sqft">Smallest Sq Ft</option>
+              </select>
+            </label>
+            <p id="citySalesHeader" class="muted"></p>
+            <div class="sold-homes-wrap sold-homes-zebra sold-homes-scroll">
+              <table class="sold-homes-table">
+                <thead>
+                  <tr>
+                    <th>Select</th>
+                    <th class="nbhd-market-cell">NBHD market area</th>
+                    <th>Address</th>
+                    <th>Square Ft vs subject</th>
+                    <th>Sale Date</th>
+                    <th>Sale price</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="citySalesBody"></tbody>
+              </table>
+            </div>
+          </details>
+          <div class="comp-print-bar">
+            <button id="printCompSheetBtn" type="button">Print Comp Sheet (Neighborhood + City)</button>
+            <p id="compSheetStatus" class="muted"></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card panel workflow-gated" id="step-notice">
+        <h2>Notice values (optional)</h2>
+        <p class="muted notice-intro">
+          Review last year value, current market value, exemption status, and protest instructions from your notice. It is not a
+          bill; it is your chance to review and respond.
+        </p>
+        <div class="notice-table-wrap">
+          <table class="notice-table">
+            <thead>
+              <tr>
+                <th class="notice-table-corner" scope="col"></th>
+                <th scope="col">Last year</th>
+                <th scope="col">Proposed</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Market value</th>
+                <td>
+                  <input
+                    id="lastYearMarket"
+                    type="number"
+                    min="0"
+                    placeholder="e.g. 494611"
+                    aria-label="Last year market value"
+                  />
+                </td>
+                <td>
+                  <input
+                    id="proposedMarket"
+                    type="number"
+                    min="0"
+                    placeholder="e.g. 515523"
+                    aria-label="Proposed market value"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Assessed value</th>
+                <td>
+                  <input
+                    id="lastYearAssessed"
+                    type="number"
+                    min="0"
+                    placeholder="e.g. 494611"
+                    aria-label="Last year assessed value"
+                  />
+                </td>
+                <td>
+                  <input
+                    id="proposedAssessed"
+                    type="number"
+                    min="0"
+                    placeholder="e.g. 515523"
+                    aria-label="Proposed assessed value"
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <button id="analyzeNoticeBtn" type="button">Analyze Notice</button>
+        <div id="noticeSignals" class="signal-chips"></div>
+      </section>
+
+      <section class="card panel workflow-gated" id="step-estimate">
+        <h2>Estimate Protest Potential</h2>
+        <p class="muted helper-text">
+          Core estimate: land + improvements, optional condition discount, and (if provided) assessed override. Run this
+          after Find Property; notice values are optional.
+        </p>
+        <label>
+          Estimated Condition Adjustment (%) (0-40)
+          <input id="conditionPenalty" type="number" min="0" max="40" value="0" />
+        </label>
+        <p class="muted helper-text">Use this if the property has condition issues (repairs, wear, damage).</p>
+        <label>
+          Use Notice Assessed Value Instead (optional)
+          <input id="assessedOverride" type="number" min="0" placeholder="e.g. 285000" />
+        </label>
+        <p class="muted helper-text">Use this when county fetched assessed value is missing or not what your notice shows.</p>
+
+        <details class="collapsible-section">
+          <summary class="collapsible-summary">
+            <span class="collapsible-title">Assessed value history (optional)</span>
+            <span class="collapsible-hint muted"
+              >Paste from tax appraisal district roll value history to add a trend line to reasoning and your packet. You can skip this
+              if comps and condition are enough for your case.</span
+            >
+          </summary>
+        <div class="history-help">
+          <p class="muted helper-text">
+            Source: Tax Appraisal District property page → <strong>Property Roll Value History</strong> table (use
+            <strong>Year</strong> + <strong>Assessed</strong> columns).
+          </p>
+          <p>
+            <a
+              id="historyPropertyLink"
+              class="source-link"
+              href="https://esearch.bellcad.org/Property/Search"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Open eSearch (prior years &amp; taxes — for Roll Value History)</a
+            >
+          </p>
+          <figure class="example-figure">
+            <img
+              class="example-image"
+              src="./assets/PropertyRollValueHistory.png"
+              alt="Tax appraisal district Property Roll Value History table example showing Year and Assessed columns"
+            />
+            <figcaption class="muted helper-text">Example: copy Year + Assessed values from this table.</figcaption>
+          </figure>
+        </div>
+        <label>
+          Paste Property Roll Value History Rows (optional)
+          <textarea
+            id="trendPasteInput"
+            rows="4"
+            placeholder="Example: 2025 ... $494,611 / 2024 ... $500,000 / 2023 ... $402,661"
+          ></textarea>
+        </label>
+        <p class="muted helper-text">Sample paste format (one row per year):</p>
+        <pre>2025  411,611  83,000  0  494,611  0  494,611
+2024  417,000  83,000  0  500,000  0  500,000
+2023  362,661  40,000  0  402,661  0  402,661</pre>
+        <button id="parseTrendBtn">Auto-fill History From Paste</button>
+        <div id="trendRows"></div>
+        <button id="addTrendRowBtn">Add History Row</button>
+        </details>
+
+        <p id="estimateReadiness" class="readiness-note"></p>
+        <button id="scoreBtn">Estimate Protest Potential</button>
+        <p class="muted worksheet-note">
+          <strong>Protest strength</strong> (weak / moderate / strong) is an informal in-tool estimate for your own
+          planning — it is not evidence to paste into the tax appraisal district portal.
+        </p>
+        <pre id="valuationResult"></pre>
+      </section>
+
+      <section class="card card-worksheet panel panel-accent workflow-gated" id="step-portal">
+        <h2>Tax Appraisal District online protest (draft)</h2>
+        <p class="muted helper-text">
+          The tax appraisal district portal asks for <strong>protest reason(s)</strong>, a <strong>facts</strong> box (up to 4,000
+          characters), and your <strong>value opinion</strong>. Draft those here, then copy into the official site —
+          this app does not file a protest for you.
+        </p>
+        <fieldset class="reason-fieldset">
+          <legend class="reason-legend">Reasons to select on the district portal (typical for this tool)</legend>
+          <label class="reason-label">
+            <input type="checkbox" id="reasonIncorrectMarket" checked />
+            Incorrect appraised (market) value
+          </label>
+          <label class="reason-label">
+            <input type="checkbox" id="reasonUnequal" checked />
+            Value is unequal compared with other properties
+          </label>
+        </fieldset>
+        <label class="value-opinion-label">
+          Your opinion of value (for the portal question)
+          <span class="value-opinion-row">
+            <span class="value-opinion-prefix">$</span>
+            <input
+              id="valueOpinionInput"
+              type="number"
+              min="0"
+              step="1"
+              placeholder="Matches Estimate Protest Potential unless you change it"
+            />
+            <button type="button" id="syncValueOpinionBtn" class="btn-secondary">Use estimate</button>
+          </span>
+        </label>
+        <label>
+          Facts for the district portal (paste into “Give facts that may help resolve your case”)
+          <textarea id="protestFactsInput" rows="10" maxlength="4000" placeholder="Click “Fill from estimate”, then edit."></textarea>
+        </label>
+        <div class="facts-toolbar">
+          <span id="protestFactsCharCount" class="char-count muted" aria-live="polite">0 / 4000</span>
+          <button type="button" id="fillFactsFromEstimateBtn" class="btn-secondary">Fill from estimate</button>
+          <button type="button" id="copyProtestFactsBtn" class="btn-secondary">Copy facts</button>
+        </div>
+      </section>
+
+      <section class="card panel workflow-gated" id="step-packet">
+        <h2>Generate Protest Packet</h2>
+        <p class="muted helper-text">
+          Includes parcel summary, checklist, letter draft, and your Tax Appraisal District online protest draft answers.
+        </p>
+        <label>
+          Owner Name Override (optional)
+          <input id="ownerName" placeholder="Owner name" />
+        </label>
+        <div class="packet-actions">
+          <button id="packetBtn">Generate Packet</button>
+          <button id="copyPacketMdBtn">Copy Protest Packet as Markdown</button>
+        </div>
+        <p id="packetStatus" class="muted"></p>
+        <pre id="packetResult"></pre>
+      </section>
+
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <main class="container main-content lookup-shell" id="playbookPage" hidden>
+      <div class="dashboard-body">
+        <div class="dashboard-body-main lookup-main">
+          <section class="card panel panel-muted lookup-card">
+            <h2>Protest Playbook</h2>
+            <ol>
+              <li>File by May 15 or 30 days after your notice date (whichever is later).</li>
+              <li>Review BCAD details for errors (sqft, lot size, year built, features).</li>
+              <li>Take "ugly" photos now: foundation cracks, drainage issues, roof wear, and aging systems.</li>
+              <li>Collect condition evidence (photos + contractor repair estimates) for protest support, not listing prep.</li>
+              <li>Watch for the land value trap: if total value is flat but land value jumps, protest it immediately.</li>
+              <li>Protest every year, either DIY or with a protest firm.</li>
+              <li>Request BCAD comp packet and identify mismatches.</li>
+              <li>Prepare concise talking points for the informal meeting.</li>
+            </ol>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <div id="settingsModal" class="settings-modal" hidden>
+      <div id="settingsModalBackdrop" class="settings-modal-backdrop" aria-hidden="true"></div>
+      <section class="settings-modal-panel card panel panel-muted" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle">
+        <header class="settings-modal-header">
+          <div class="settings-modal-title-block">
+            <h2 id="settingsModalTitle">Settings</h2>
+            <p class="settings-modal-subtitle">Customize layout and readability preferences.</p>
+          </div>
+          <button id="closeSettingsModalBtn" class="settings-close-btn" type="button" aria-label="Close settings">Close</button>
+        </header>
+        <div class="settings-modal-grid">
+          <label class="sidebar-setting-field settings-card-row">
+            <span>Text Size</span>
+            <select id="uiTextSizeSelect" aria-label="Text size">
+              <option value="sm">Small</option>
+              <option value="md">Medium (default)</option>
+              <option value="lg">Large</option>
+            </select>
+          </label>
+          <label class="sidebar-setting-field settings-card-row">
+            <span>Density</span>
+            <select id="uiDensitySelect" aria-label="Density">
+              <option value="comfortable">Comfortable</option>
+              <option value="compact">Compact</option>
+            </select>
+          </label>
+          <label class="sidebar-setting-check settings-card-row">
+            <input id="uiHideHelpToggle" type="checkbox" />
+            <span id="uiHideHelpState" class="settings-toggle-state" aria-live="polite">OFF</span>
+            <span>Hide helper text</span>
+          </label>
+          <button id="uiResetStateBtn" class="sidebar-settings-reset" type="button">Reset App State</button>
+        </div>
+      </section>
+    </div>
+
+    <div id="compPhotosModal" class="settings-modal" hidden>
+      <div id="compPhotosModalBackdrop" class="settings-modal-backdrop" aria-hidden="true"></div>
+      <section
+        class="settings-modal-panel card panel panel-muted comp-photos-modal-panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="compPhotosModalTitle"
+      >
+        <header class="settings-modal-header">
+          <div class="settings-modal-title-block">
+            <h2 id="compPhotosModalTitle">Attached Photos</h2>
+            <p id="compPhotosModalSubtitle" class="settings-modal-subtitle">Review and remove comp photos.</p>
+          </div>
+          <button id="closeCompPhotosModalBtn" class="settings-close-btn" type="button" aria-label="Close photo viewer">
+            Close
+          </button>
+        </header>
+        <div id="compPhotosModalBody" class="comp-photos-grid"></div>
+      </section>
+    </div>
+
+    <script src="./data/settings.js"></script>
+    <script src="./data/adapters.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>

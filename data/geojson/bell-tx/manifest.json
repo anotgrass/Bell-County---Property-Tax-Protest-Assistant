@@ -1,0 +1,14 @@
+{
+  "county": "bell-tx",
+  "label": "Bell County, TX",
+  "latest": "2026",
+  "years": [
+    "2026"
+  ],
+  "layers": {
+    "parcels": "parcels.geojson",
+    "market-analysis": "market-analysis.geojson",
+    "sales": "sales.geojson"
+  },
+  "updated": "2026-04-22T23:37:08Z"
+}
