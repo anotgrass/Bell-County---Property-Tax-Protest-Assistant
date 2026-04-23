@@ -17,28 +17,11 @@
           <h1 class="site-title">
             <a href="#">Bell County - Property Tax Protest Assistant</a>
           </h1>
-          <p id="siteTagline" class="site-tagline muted">
-            Planning &amp; drafting aid · confirm values &amp; deadlines with Bell CAD · not legal advice
-          </p>
+          <p id="siteTagline" class="site-tagline muted">Bell County, Texas · informal planning tool</p>
         </div>
         <nav class="site-nav" aria-label="Tax appraisal district site">
           <button id="backToFindBtn" class="site-nav-back-btn" type="button" hidden>New Search</button>
         </nav>
-      </div>
-      <div class="legal-disclaimer-banner" role="note" aria-label="Important legal and use disclaimer">
-        <span class="legal-disclaimer-dot" aria-hidden="true"></span>
-        <div class="legal-disclaimer-copy">
-          <strong class="legal-disclaimer-kicker">Informational tool — not legal advice</strong>
-          <p class="legal-disclaimer-body">
-            This application is <strong>not</strong> a law firm, <strong>not</strong> affiliated with the Bell County
-            Appraisal District or any government agency, and <strong>does not</strong> file protests for you. Estimates,
-            scores, checklists, and draft letters are <strong>planning aids only</strong>. Property values, deadlines,
-            forms, and eligibility rules change; you must <strong>verify every figure and requirement</strong> against
-            official CAD records, your notice, and current instructions before you rely on anything here. For legal
-            questions or high-stakes decisions, consult a <strong>qualified attorney or tax professional</strong>.
-            There is <strong>no warranty</strong> as to accuracy or fitness for a particular purpose.
-          </p>
-        </div>
       </div>
     </header>
 
@@ -62,6 +45,10 @@
           <button class="app-main-menu-link" type="button" data-app-page="playbook">
             <span class="menu-link-icon" aria-hidden="true">☰</span>
             <span>Playbook</span>
+          </button>
+          <button class="app-main-menu-link" type="button" data-app-page="about">
+            <span class="menu-link-icon" aria-hidden="true">ℹ</span>
+            <span>About</span>
           </button>
         </nav>
         <div class="app-main-menu-footer">
@@ -487,6 +474,88 @@
         </div>
       </div>
     </main>
+
+    <main class="container main-content lookup-shell" id="aboutPage" hidden>
+      <div class="dashboard-body">
+        <div class="dashboard-body-main lookup-main about-page">
+          <section class="card panel panel-primary lookup-card">
+            <h2>About the data</h2>
+            <p class="muted helper-text">
+              How <strong>Bell County - Property Tax Protest Assistant</strong> loads Bell County Appraisal District (Bell
+              CAD) information and what happens to it inside your browser.
+            </p>
+
+            <h3 class="about-subhead">Where the numbers come from</h3>
+            <p>
+              In normal use the app talks directly to <strong>public, read-only</strong> map services that Bell CAD
+              publishes for parcel boundaries and attributes, neighborhood market summaries, and related layers the
+              district exposes for the same workflows you would use on their public maps and property search. There is
+              <strong>no separate backend</strong> run by this project: your browser sends standard web requests, and the
+              appraisal district’s servers return the same kind of feature data their own tools use.
+            </p>
+
+            <h3 class="about-subhead">What gets loaded when you search</h3>
+            <p>
+              When you enter a <strong>property ID</strong> and open the dashboard, the app asks those public layers for
+              the parcel that matches your ID. It reads fields such as ownership, situs address, land and improvement
+              values, neighborhood codes, and other columns the district exposes, then <strong>normalizes</strong> them
+              into a single in-memory “parcel bundle” the UI can render consistently (labels and field names vary by
+              layer, so the adapter maps them to one shape).
+            </p>
+            <p>
+              Separately, it pulls <strong>market analysis</strong> and <strong>neighborhood sales</strong> style records
+              so the Market and Sold homes sections can show medians, comparables-style lists, and context for your
+              neighborhood. Nothing is written back to the CAD: the app only <strong>reads</strong> public data.
+            </p>
+
+            <h3 class="about-subhead">How that data is used in the tool</h3>
+            <ul>
+              <li><strong>Display &amp; links</strong> — KPI strip, property quick links, and market cards reflect the fetched attributes.</li>
+              <li><strong>Estimate Protest Potential</strong> — uses land and improvement components (and your optional condition and assessed overrides) to build an informal supportable-value sketch; it does not replace a formal appraisal.</li>
+              <li><strong>Notice &amp; worksheet</strong> — you type what your notice says; the app combines that with fetched roll data for drafting only.</li>
+              <li><strong>Packet / markdown export</strong> — assembles summaries and checklists from what is on screen plus your inputs; you copy the result into official systems yourself.</li>
+            </ul>
+
+            <h3 class="about-subhead">Always verify with Bell CAD</h3>
+            <p class="muted helper-text">
+              Values, deadlines, and forms change. Treat everything here as <strong>planning support</strong>—confirm
+              every figure, date, and filing rule on the official Bell CAD website and your paper or electronic notice
+              before you rely on it.
+            </p>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <footer
+      class="legal-disclaimer-banner app-legal-footer"
+      role="contentinfo"
+      aria-label="Important legal and use disclaimer"
+    >
+      <span class="legal-disclaimer-dot" aria-hidden="true"></span>
+      <div class="legal-disclaimer-copy">
+        <div class="legal-disclaimer-compact">
+          <strong class="legal-disclaimer-kicker">Not legal advice</strong>
+          <p class="legal-disclaimer-lede">
+            Independent planning tool—not Bell CAD, not a law firm, <strong>does not</strong> file protests. Drafts &amp;
+            numbers are <strong>aids only</strong>; confirm with your notice &amp; official CAD rules.
+            <strong>No warranty.</strong>
+          </p>
+        </div>
+        <details class="legal-disclaimer-details">
+          <summary class="legal-disclaimer-summary">Full disclaimer</summary>
+          <p class="legal-disclaimer-full">
+            This application is <strong>not</strong> a law firm, <strong>not</strong> affiliated with the Bell County
+            Appraisal District or any government agency, and <strong>does not</strong> file protests for you. Estimates,
+            scores, checklists, and draft letters are <strong>planning aids only</strong>. Property values, deadlines,
+            forms, and eligibility rules change; you must <strong>verify every figure and requirement</strong> against
+            official CAD records, your notice, and current instructions before you rely on anything here. For legal
+            questions or high-stakes decisions, consult a <strong>qualified attorney or tax professional</strong>. There
+            is <strong>no warranty</strong> as to accuracy or fitness for a particular purpose.
+          </p>
+        </details>
+      </div>
+    </footer>
 
     <div id="settingsModal" class="settings-modal" hidden>
       <div id="settingsModalBackdrop" class="settings-modal-backdrop" aria-hidden="true"></div>

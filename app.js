@@ -690,19 +690,25 @@ function syncHeaderOffset() {
   const height = Math.ceil(header.getBoundingClientRect().height);
   const offset = Math.max(56, height + 14);
   document.documentElement.style.setProperty("--header-offset", `${offset}px`);
+  const footer = document.querySelector(".app-legal-footer");
+  const fh = footer ? Math.ceil(footer.getBoundingClientRect().height) : 0;
+  document.documentElement.style.setProperty("--legal-footer-height", `${Math.max(48, fh)}px`);
 }
 
 function setActiveAppPage(pageId) {
-  const next = pageId === "dashboard" || pageId === "playbook" ? pageId : "find";
+  const allowedTopLevel = new Set(["dashboard", "playbook", "about"]);
+  const next = allowedTopLevel.has(pageId) ? pageId : "find";
   activeAppPage = next;
   document.body.classList.toggle("app-mode-dashboard", next === "dashboard");
   document.body.classList.toggle("app-mode-lookup", next !== "dashboard");
   const lookupPage = byId("lookupPage");
   const dashboardPage = byId("dashboardPage");
   const playbookPage = byId("playbookPage");
+  const aboutPage = byId("aboutPage");
   if (lookupPage) lookupPage.hidden = next !== "find";
   if (dashboardPage) dashboardPage.hidden = next !== "dashboard";
   if (playbookPage) playbookPage.hidden = next !== "playbook";
+  if (aboutPage) aboutPage.hidden = next !== "about";
   const menuLinks = [...document.querySelectorAll(".app-main-menu-link[data-app-page]")];
   menuLinks.forEach((link) => {
     const on = link.getAttribute("data-app-page") === next;
@@ -907,8 +913,7 @@ function syncSettingsControls() {
   applyUiPrefs();
   const tagline = byId("siteTagline");
   if (tagline) {
-    tagline.textContent =
-      "Planning & drafting aid · confirm values & deadlines with Bell CAD · not legal advice";
+    tagline.textContent = "Bell County, Texas · informal planning tool";
   }
 }
 
@@ -3183,6 +3188,13 @@ window.addEventListener("resize", syncHeaderOffset, { passive: true });
 window.addEventListener("load", syncHeaderOffset);
 window.setTimeout(syncHeaderOffset, 120);
 window.setTimeout(syncHeaderOffset, 500);
+
+const legalDisclaimerDetails = document.querySelector(".app-legal-footer .legal-disclaimer-details");
+if (legalDisclaimerDetails) {
+  legalDisclaimerDetails.addEventListener("toggle", () => {
+    window.requestAnimationFrame(() => syncHeaderOffset());
+  });
+}
 
 bind("searchApnBtn", searchParcelByApn, null);
 bind("searchApnLandingBtn", searchParcelByApn, null);
